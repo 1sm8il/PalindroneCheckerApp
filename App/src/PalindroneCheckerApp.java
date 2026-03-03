@@ -1,35 +1,66 @@
 import java.util.Scanner;
-import java.util.Deque;
-import java.util.ArrayDeque;
 
-public class UseCase7PalindromeCheckerApp {
+public class UseCase8PalindromeCheckerApp {
+
+    // Node class for Singly Linked List
+    static class Node {
+        char data;
+        Node next;
+
+        Node(char data) {
+            this.data = data;
+            this.next = null;
+        }
+    }
 
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("=== Palindrome Checker App (UC7) ===");
+        System.out.println("=== Palindrome Checker App (UC8) ===");
         System.out.print("Enter a string: ");
         String input = scanner.nextLine();
 
-        Deque<Character> deque = new ArrayDeque<>();
-
-        // Insert characters into deque
-        for (int i = 0; i < input.length(); i++) {
-            deque.addLast(input.charAt(i));
+        if (input.length() == 0) {
+            System.out.println("Result: The given string is a Palindrome.");
+            scanner.close();
+            return;
         }
+
+        // Convert string to linked list
+        Node head = new Node(input.charAt(0));
+        Node current = head;
+
+        for (int i = 1; i < input.length(); i++) {
+            current.next = new Node(input.charAt(i));
+            current = current.next;
+        }
+
+        // Find middle using fast and slow pointers
+        Node slow = head;
+        Node fast = head;
+
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        // Reverse second half
+        Node secondHalf = reverse(slow);
+
+        // Compare halves
+        Node firstHalf = head;
+        Node tempSecond = secondHalf;
 
         boolean isPalindrome = true;
 
-        // Compare front and rear
-        while (deque.size() > 1) {
-            char front = deque.removeFirst();
-            char rear = deque.removeLast();
-
-            if (front != rear) {
+        while (tempSecond != null) {
+            if (firstHalf.data != tempSecond.data) {
                 isPalindrome = false;
                 break;
             }
+            firstHalf = firstHalf.next;
+            tempSecond = tempSecond.next;
         }
 
         if (isPalindrome) {
@@ -39,5 +70,20 @@ public class UseCase7PalindromeCheckerApp {
         }
 
         scanner.close();
+    }
+
+    // In-place reversal of linked list
+    public static Node reverse(Node head) {
+        Node prev = null;
+        Node current = head;
+
+        while (current != null) {
+            Node nextNode = current.next;
+            current.next = prev;
+            prev = current;
+            current = nextNode;
+        }
+
+        return prev;
     }
 }
