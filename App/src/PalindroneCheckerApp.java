@@ -1,42 +1,51 @@
 import java.util.Scanner;
+import java.util.Stack;
 
-public class UseCase10PalindromeCheckerApp {
+// Service class following OOPS principles
+class PalindromeChecker {
+
+    // Encapsulated palindrome logic
+    public boolean checkPalindrome(String input) {
+
+        Stack<Character> stack = new Stack<>();
+
+        // Push all characters into stack
+        for (int i = 0; i < input.length(); i++) {
+            stack.push(input.charAt(i));
+        }
+
+        // Compare with original string
+        for (int i = 0; i < input.length(); i++) {
+            if (input.charAt(i) != stack.pop()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+}
+
+public class UseCase11PalindromeCheckerApp {
 
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("=== Palindrome Checker App (UC10) ===");
+        System.out.println("=== Palindrome Checker App (UC11) ===");
         System.out.print("Enter a string: ");
         String input = scanner.nextLine();
 
-        // Normalize string: remove spaces and convert to lowercase
-        String normalized = input.replaceAll("\\s+", "").toLowerCase();
+        // Create service object
+        PalindromeChecker checker = new PalindromeChecker();
 
-        boolean isPalindrome = checkPalindrome(normalized);
+        boolean result = checker.checkPalindrome(input);
 
-        if (isPalindrome) {
-            System.out.println("Result: The given string is a Palindrome (ignoring case and spaces).");
+        if (result) {
+            System.out.println("Result: The given string is a Palindrome.");
         } else {
-            System.out.println("Result: The given string is NOT a Palindrome (ignoring case and spaces).");
+            System.out.println("Result: The given string is NOT a Palindrome.");
         }
 
         scanner.close();
-    }
-
-    public static boolean checkPalindrome(String str) {
-
-        int start = 0;
-        int end = str.length() - 1;
-
-        while (start < end) {
-            if (str.charAt(start) != str.charAt(end)) {
-                return false;
-            }
-            start++;
-            end--;
-        }
-
-        return true;
     }
 }
