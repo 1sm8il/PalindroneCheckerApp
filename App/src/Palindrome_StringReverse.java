@@ -1,4 +1,4 @@
-public class Hardcoded_Result
+public class Palindrome_StringReverse
 {
 
 
