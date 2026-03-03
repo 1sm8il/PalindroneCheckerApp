@@ -1,40 +1,42 @@
 import java.util.Scanner;
 
-public class UseCase9PalindromeCheckerApp {
+public class UseCase10PalindromeCheckerApp {
 
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("=== Palindrome Checker App (UC9) ===");
+        System.out.println("=== Palindrome Checker App (UC10) ===");
         System.out.print("Enter a string: ");
         String input = scanner.nextLine();
 
-        boolean isPalindrome = checkPalindrome(input, 0, input.length() - 1);
+        // Normalize string: remove spaces and convert to lowercase
+        String normalized = input.replaceAll("\\s+", "").toLowerCase();
+
+        boolean isPalindrome = checkPalindrome(normalized);
 
         if (isPalindrome) {
-            System.out.println("Result: The given string is a Palindrome.");
+            System.out.println("Result: The given string is a Palindrome (ignoring case and spaces).");
         } else {
-            System.out.println("Result: The given string is NOT a Palindrome.");
+            System.out.println("Result: The given string is NOT a Palindrome (ignoring case and spaces).");
         }
 
         scanner.close();
     }
 
-    // Recursive method
-    public static boolean checkPalindrome(String str, int start, int end) {
+    public static boolean checkPalindrome(String str) {
 
-        // Base condition
-        if (start >= end) {
-            return true;
+        int start = 0;
+        int end = str.length() - 1;
+
+        while (start < end) {
+            if (str.charAt(start) != str.charAt(end)) {
+                return false;
+            }
+            start++;
+            end--;
         }
 
-        // If mismatch found
-        if (str.charAt(start) != str.charAt(end)) {
-            return false;
-        }
-
-        // Recursive call
-        return checkPalindrome(str, start + 1, end - 1);
+        return true;
     }
 }
